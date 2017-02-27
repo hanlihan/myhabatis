@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2017-2-15 9:59:56 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.ittx.car.model.Car" table="car">
+        <id name="uid" type="int" access="field">
+            <column name="uid" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="name" />
+        </property>
+        <property name="model" type="java.lang.String">
+            <column name="model" />
+        </property>
+        <property name="carnumber" type="java.lang.String">
+            <column name="carnumber" />
+        </property>
+        <property name="number" type="java.lang.String">
+            <column name="number" />
+        </property>
+    </class>
+</hibernate-mapping>

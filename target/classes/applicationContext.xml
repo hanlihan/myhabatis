@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- <context:annotation-config /> -->
+	<context:component-scan base-package="com.ittx.car" >
+	   <!-- 除了base-package包下@Controller注解全都扫描 -->
+	    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/db1606"></property>
+		<property name="user" value="root" />
+		<property name="password" value="154331" />
+		<!-- 其他配置 -->
+		<!-- 初始化时获得三个连接，取值应在minPoolSize与maxPoolSize之间。Default：3 -->
+		<property name="initialPoolSize" value="3" />
+		<property name="minPoolSize" value="2" />
+		<property name="maxPoolSize" value="3" />
+		<property name="maxStatements" value="100" />
+		<property name="acquireIncrement" value="2" />
+		<property name="idleConnectionTestPeriod" value="120" />
+		<property name="maxIdleTime" value="3600"></property>
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mappingResources">
+			<list>
+				<value>com/ittx/car/model/Car.hbm.xml</value>
+				<value>com/ittx/car/model/User.hbm.xml</value>				
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+
+			</props>
+		</property>
+	</bean>
+
+	<!-- 事物管理 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!-- 用注解来实现事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+</beans>
